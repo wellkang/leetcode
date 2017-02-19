@@ -17,4 +17,4 @@ def combination_sum4(nums, target):
 
 
 if __name__ == '__main__':
-    print combination_sum4([5, 7], 12)
+    print(combination_sum4([5, 7], 12))

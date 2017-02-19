@@ -28,4 +28,4 @@ def wiggle_max_length(nums):
     return k
 
 if __name__ == '__main__':
-    print wiggle_max_length([1,7,4,9,2,5])
+    print(wiggle_max_length([1,7,4,9,2,5]))
