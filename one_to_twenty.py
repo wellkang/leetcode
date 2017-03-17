@@ -59,6 +59,22 @@ def longest_len_substring_without_repeat(s):
     return m
 
 
+# no.4 找出两个已经排序的数组的中位数
+def find_median_sorted_arrays(l1, l2):
+    # todo: too hard
+    pass
+
+
+# 找出字符串中最长的回文子串
+def longest_palindrome(s):
+    pralind_str = ''
+    for i in range(len(s)):
+        for j in range(i, len(s)):
+            if s[i:j] == s[j:i:-1]:
+                if j-i+1 > len(pralind_str):
+                    pralind_str = s[i:j]
+    return pralind_str
+
 if __name__ == '__main__':
     s = 'pwwkew'
     print(longest_len_substring_without_repeat(s))
