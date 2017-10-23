@@ -1,7 +1,11 @@
+# -*- coding： utf8 -*-
 # -----------------------------------------------------------
 # leetcode algorithms 1 to 20
 # create by jlkang
 # -----------------------------------------------------------
+
+import unittest
+
 
 # no.1 给定一个包含整数的数组，给定一个目标结果，返回数组中两个数相加等
 # 于目标结果的索引，假设数组中有唯一的解
@@ -22,10 +26,12 @@ class ListNode(object):
         self.val = x
         self.next = None
 
+
 def travel(l):
     while l is not None:
         print(l.val)
         l = l.next
+
 
 def add_two_number(l1, l2):
     ret = ListNode(0)
@@ -65,7 +71,7 @@ def find_median_sorted_arrays(l1, l2):
     pass
 
 
-# 找出字符串中最长的回文子串
+# no.5 找出字符串中最长的回文子串
 def longest_palindrome(s):
     pralind_str = ''
     for i in range(len(s)):
@@ -75,6 +81,70 @@ def longest_palindrome(s):
                     pralind_str = s[i:j]
     return pralind_str
 
+
+# no.40
+def combination_sum(candidates, target):
+    candidates.sort()
+    table = [None] + [set() for _ in range(target)]
+    for i in candidates:
+        if i > target:
+            break
+        for j in range(target - i, 0, -1):
+            table[i + j] |= {elt + (i,) for elt in table[j]}
+        table[i].add((i,))
+    return map(list, table[target])
+
+
+# no.42
+class Stack(object):
+    def __init__(self, capacity):
+        self._capacity = capacity
+        self._stack = [None] * self._capacity
+        self._top = -1
+
+    def push(self, value):
+        self._top += 1
+        self._stack[self._top] = value
+
+    def pop(self):
+        value = self._stack[self._top]
+        self._top -= 1
+        return value
+
+    @property
+    def top(self):
+        return self._stack[self._top]
+
+    def is_empty(self):
+        if self._top < 0:
+            return True
+        return False
+
+
+def trap_rain_water(nums):
+    water = 0
+    stack = Stack(len(nums))
+    for i, n in enumerate(nums):
+        if n <= 0:
+            continue
+        if stack.is_empty():
+            stack.push((i, n))
+            continue
+        if n >= stack.top[1] and i - stack.top[0] > 1:
+            _i, _n = stack.pop()
+            pool = (i - _i -1) * min(_n, n)
+            block = 0
+            for _ in range(_i + 1, i):
+                block += nums[_]
+            water += pool - block
+            stack.push((i, n))
+        elif n >= stack.top[1] and i - stack.top[0] == 1:
+            stack.pop()
+            stack.push((i, n))
+        else:
+            pass
+    return water
+
 if __name__ == '__main__':
-    s = 'pwwkew'
-    print(longest_len_substring_without_repeat(s))
+    s = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+    print(trap_rain_water(s))
