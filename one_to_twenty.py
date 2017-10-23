@@ -124,27 +124,26 @@ class Stack(object):
 def trap_rain_water(nums):
     water = 0
     stack = Stack(len(nums))
+    mid_max = 0
     for i, n in enumerate(nums):
-        if n <= 0:
-            continue
         if stack.is_empty():
             stack.push((i, n))
             continue
-        if n >= stack.top[1] and i - stack.top[0] > 1:
-            _i, _n = stack.pop()
-            pool = (i - _i -1) * min(_n, n)
-            block = 0
-            for _ in range(_i + 1, i):
-                block += nums[_]
-            water += pool - block
+        if n < stack.top[1]:
             stack.push((i, n))
-        elif n >= stack.top[1] and i - stack.top[0] == 1:
-            stack.pop()
-            stack.push((i, n))
+            mid_max = n
         else:
-            pass
+            while not stack.is_empty():
+                _i, _n = stack.pop()
+                _water = (i - _i - 1) * (min(_n, n) - mid_max)
+                water += _water
+                mid_max = _n
+                if n <= _n:
+                    stack.push((_i, _n))
+                    break
+            stack.push((i, n))
     return water
 
 if __name__ == '__main__':
-    s = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+    s = [4, 2, 0, 3, 2, 5]
     print(trap_rain_water(s))
